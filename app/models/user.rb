@@ -24,4 +24,8 @@ class User < ApplicationRecord
     self.friends << user
     user.friends << self
   end
+
+  def can_befriend?(user)
+    !(friends.include?(user) || self == user)
+  end
 end
