@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  has_many :friendships
+  has_many :friends, through: :friendships
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -17,5 +18,10 @@ class User < ApplicationRecord
     page = Nokogiri::HTML(open(website))
     raw_headers = page.css('h1,h2,h3').sort_by { |h| h.name }
     self.headers = raw_headers.map{ |h| {h.name => h.text} if h.text.present? }.compact
+  end
+
+  def befriend(user)
+    self.friends << user
+    user.friends << self
   end
 end
