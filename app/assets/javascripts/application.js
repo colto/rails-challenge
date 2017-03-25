@@ -10,7 +10,18 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+// bootstrap/sprockets provides individual Bootstrap Javascript files (alert.js or dropdown.js)
+// while bootstrap provides a concatenated file containing all Bootstrap Javascripts.
+
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap/custom
 //= require turbolinks
 //= require_tree .
+
+document.addEventListener("turbolinks:load", function() {
+    if ($('li.active').html() != undefined) {
+        $('li.active').removeClass('active');
+    }
+    $('a[href="' + location.pathname + '"]').parent('li').addClass('active');
+});
