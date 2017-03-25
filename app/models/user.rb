@@ -14,7 +14,8 @@ class User < ApplicationRecord
   end
 
   def fetch_headers
-    raw_headers = Nokogiri::HTML(open(website)).css('h1,h2,h3')
+    page = Nokogiri::HTML(open(website))
+    raw_headers = page.css('h1,h2,h3').sort_by { |h| h.name }
     self.headers = raw_headers.map{ |h| {h.name => h.text} if h.text.present? }.compact
   end
 end
