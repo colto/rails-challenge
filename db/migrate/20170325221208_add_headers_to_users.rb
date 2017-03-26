@@ -1,5 +1,5 @@
 class AddHeadersToUsers < ActiveRecord::Migration[5.0]
   def change
-    add_column :users, :headers, :json
+    add_column :users, :headers, :jsonb
   end
 end
