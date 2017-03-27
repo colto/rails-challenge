@@ -1,3 +1,11 @@
 h1= @user.full_name
-- @user.headers.each do |header|
-  div.container.header_box= header.map{|k,v| "<#{k}>#{v}</#{k}>"}.first.html_safe
+div.container.col-lg-6
+  - @user.headers.each do |header|
+    = header.map{|k,v| "<#{k}>#{v}</#{k}>"}.first.html_safe
+div.container.col-lg-6
+  h2 Friends
+  - if @user.friends.present?
+    - @user.friends.each do |friend|
+      p= link_to friend.full_name, user_path(friend)
+  - else
+    p This user has no friends

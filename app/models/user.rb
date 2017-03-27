@@ -6,9 +6,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   validates_presence_of :first_name, :last_name, :website
-  validates :website, format: { with: URI::regexp(%w(http https)), message: 'Must start with http/https' }
 
-  after_validation [:fetch_headers, :make_searchable], if: :website_changed?
+  after_validation :shorten_url, :fetch_headers, if: :website_changed?
 
   def full_name
     "#{first_name} #{last_name}"
@@ -36,5 +35,14 @@ class User < ApplicationRecord
     else
       all
     end
+  end
+
+  def shorten_url
+    response = `curl https://www.googleapis.com/urlshortener/v1/url?key=#{ENV['GOOGLE_API_KEY']} \
+      -H 'Content-Type: application/json' \
+      -d '{"longUrl": "#{website}"}'`
+    json = JSON.parse(response)
+    self.short_url = json["id"]
+    self.website   = json["longUrl"]
   end
 end

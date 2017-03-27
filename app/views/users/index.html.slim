@@ -9,12 +9,14 @@ h1 Experts Index
       tr
         th Email Address
         th Website
+        th Friend Count
         th Add Friend
     tbody
       - @users.each do |user|
         tr
           td= link_to user.full_name, user_path(user)
-          td= link_to user.website, user.website, target: '_blank'
+          td= link_to user.short_url, user.short_url, target: '_blank'
+          td= user.friends.count
           - if current_user.can_befriend?(user)
             td= link_to 'Add Friend', user_add_friend_path(user), class: 'btn btn-primary active', method: :post
           - else
