@@ -22,9 +22,11 @@
 					  <span class="icon-bar"></span>
 				  </button>
 				  <%= link_to 'Experts Directory', root_path, class: 'navbar-brand' %>
-          <%= form_tag(users_path, method: 'get', class: 'navbar-form navbar-right') do %>
-            <%= search_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search Experts'  %>
-            <%= submit_tag 'Search', class: 'btn btn-default', :name => nil %>
+          <% if current_user %>
+            <%= form_tag(users_path, method: 'get', class: 'navbar-form navbar-right') do %>
+              <%= search_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search Experts'  %>
+              <%= submit_tag 'Search', class: 'btn btn-default', :name => nil %>
+            <% end %>
           <% end %>
 			  </div>
 
